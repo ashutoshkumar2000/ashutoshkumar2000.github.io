@@ -1,46 +1,39 @@
-# Astro Starter Kit: Basics
+# Ashutosh Kumar — Portfolio
+
+A static Astro portfolio with an editorial paper/ink palette, scroll-linked engineering diagrams, and a custom six-piece Three.js AK monogram. Fonts are self-hosted; no external services or credentials are needed.
+
+## Development
+
+Requires Node.js 22.23.4 or newer.
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev -- --background
+npm run astro -- dev status
+npm run astro -- dev logs
+npm run astro -- dev stop
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Use the local URL reported by Astro; the preferred port is 4321.
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```sh
+npm run check
+npm run build
+npm run preview
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+`/` is the portfolio. `/resume` is a complete, print-friendly resume with a Print / Save as PDF action.
 
-## 🧞 Commands
+## Content
 
-All commands are run from the root of the project, from a terminal:
+Edit `src/data/portfolio.ts` for the profile, engineering stories, employment, skills, awards, education and projects. The resume shares that data. Current headings and metadata use `profile.role`. Employment entries can include optional `roleHistory` title/date pairs, rendered by the shared EmploymentRoles component on both pages; accomplishments remain grouped under the company.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+To add a project, supply a unique `id`, title, summary, status, technologies, `featured`, numeric `order`, links, and detail sections. Up to three featured projects appear as cards. Other projects, including featured overflow, appear under More projects. Detail dialogs enhance native expandable content, so the information remains available without JavaScript.
 
-## 👀 Want to learn more?
+Keep planned work labelled accurately. Kubera is in development; its intended capabilities are not presented as shipped functionality.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Motion and accessibility
+
+GSAP ScrollTrigger uses native scrolling. Three.js loads separately after the page becomes usable, renders only when visible/changing, and falls back to an SVG derived from the same six shape definitions when WebGL is unavailable. Reduced motion removes scroll animation and entrances. Mobile artwork occupies a separate region from text. Native dialogs support Escape, focus restoration and keyboard navigation.
+
+Before delivery, run the build/type check and inspect desktop/mobile layouts, the navigation, dialogs, contact actions, resume printing, reduced motion, and the static fallback. No deployment is configured by this project.

@@ -1,0 +1,60 @@
+---
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
+import '@fontsource-variable/manrope';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '../styles/global.css';
+import { profile } from '../data/portfolio';
+import Icon from '../components/Icon.astro';
+interface Props { title?: string; description?: string; resume?: boolean }
+const { title = `${profile.name} — ${profile.role}`, description = `${profile.role} in Bengaluru. Architecture, backend, frontend and the work in between. A portfolio of engineering decisions and independent projects.`, resume = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F3EDE2" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class:list={[{ 'resume-page': resume }]}>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <nav class="page-width navigation" aria-label="Main navigation">
+        <a class="brand" href={resume ? '/' : '#top'}><span>AK<span class="brand-dot">.</span></span><span class="brand-note">ENGINEER &<br />CURIOUS BUILDER</span><span class="sr-only"> — Ashutosh Kumar, home</span></a>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" hidden>Menu <Icon name="plus" /></button>
+        <div id="nav-links" class="nav-links">
+          <a href={resume ? '/#work' : '#work'}>Work</a>
+          <a href={resume ? '/#about' : '#about'}>About</a>
+          <a href={resume ? '/#projects' : '#projects'}>Projects</a>
+          <a href="/resume" aria-current={resume ? 'page' : undefined}>Resume <Icon name="document" /></a>
+          <a class="nav-contact" href={resume ? '/#contact' : '#contact'}>Let’s talk <Icon name="conversation" /></a>
+        </div>
+      </nav>
+    </header>
+    <main id="main-content" tabindex="-1"><slot /></main>
+    <footer class="site-footer">
+      <div class="page-width footer-inner"><a href={resume ? '/' : '#top'}>Ashutosh Kumar <Icon name="up" /></a><span>Made with intention. Built with Astro.</span><span>© {new Date().getFullYear()}</span><div class="footer-socials"><a href={profile.github} target="_blank" rel="noreferrer">GitHub <Icon name="external" /></a><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn <Icon name="external" /></a></div></div>
+    </footer>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const nav = document.querySelector<HTMLElement>('.navigation');
+      if (toggle && nav) {
+        toggle.hidden = false;
+        const close = () => { nav.classList.remove('menu-open'); toggle.setAttribute('aria-expanded', 'false'); };
+        toggle.addEventListener('click', () => {
+          const open = toggle.getAttribute('aria-expanded') !== 'true';
+          toggle.setAttribute('aria-expanded', String(open)); nav.classList.toggle('menu-open', open);
+        });
+        nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', close));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('menu-open')) { close(); toggle.focus(); } });
+        document.addEventListener('click', e => { if (e.target instanceof Node && !nav.contains(e.target)) close(); });
+        matchMedia('(min-width: 701px)').addEventListener('change', close);
+      }
+    </script>
+  </body>
+</html>

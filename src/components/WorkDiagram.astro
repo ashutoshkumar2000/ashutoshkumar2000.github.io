@@ -1,0 +1,28 @@
+---
+interface Props { kind: string }
+const { kind } = Astro.props;
+---
+<div class="work-diagram" aria-hidden="true">
+  <svg viewBox="0 0 560 156" fill="none">
+    {kind === 'sync' && <>
+      <text x="0" y="18">ONE BLOCKING REQUEST</text><text x="430" y="18">PARALLEL WORK</text>
+      <path class="diagram-muted" d="M4 68H200M200 68V42H428M200 68V94H428M200 68V120H428M428 42V120M428 68H550"/>
+      <path class="diagram-flow" d="M4 68H200V42H428V68H550"/><path class="diagram-flow" d="M200 68V94H428M200 68V120H428"/>
+      <circle cx="135" cy="68" r="5"/><circle cx="550" cy="68" r="5"/>
+      <text x="0" y="149">~30 SEC</text><text x="260" y="72">WORKERS + BATCHES</text><text x="460" y="149">~3 SEC</text>
+    </>}
+    {kind === 'email' && <>
+      <text x="0" y="18">A REPLY’S ROUTE HOME</text><text x="414" y="18">VERIFIED AT EDGE</text>
+      <path class="diagram-muted" d="M5 82H550"/><path class="diagram-flow" d="M5 82H550"/>
+      {[18, 186, 354, 536].map((x, i) => <><circle cx={x} cy="82" r={i === 1 ? 13 : 6}/><text x={Math.min(x - 18, 476)} y="121">{['REPLY', 'VERIFY', 'QUEUE', 'PARSE'][i]}</text></>)}
+      <path class="diagram-ink" d="m180 82 4 4 8-9"/><text x="157" y="53">HMAC</text><text x="311" y="53">ATOMIC CLAIM</text>
+    </>}
+    {kind === 'hierarchy' && <>
+      <text x="0" y="18">A STRUCTURE THAT CAN ADAPT</text><text x="420" y="18">NODES / LEVELS</text>
+      <path class="diagram-muted" d="M280 44V73M80 73H480M80 73V111M280 73V111M480 73V111M80 111V138M42 138H118M280 111V138M242 138H318"/>
+      <path class="diagram-flow" d="M280 44V73H480V111M280 73H80V111M280 73V111"/>
+      <circle cx="280" cy="44" r="7"/><circle cx="80" cy="111" r="7"/><circle cx="280" cy="111" r="7"/><circle cx="480" cy="111" r="7"/>
+      <text x="6" y="56">MOVE</text><path class="diagram-ink" d="M106 109Q180 51 251 107m-11-12 13 13-17 2"/>
+    </>}
+  </svg>
+</div>

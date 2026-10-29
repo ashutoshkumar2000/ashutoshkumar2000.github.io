@@ -1,24 +1,51 @@
-# build output
-dist/
-
-# generated types
-.astro/
-
-# dependencies
+# Rebuilt by the host from source (npm ci && npm run build)
 node_modules/
+dist/
+.astro/
+.cache/
+.vite/
+*.tsbuildinfo
 
-# logs
+# Tests and local logs
+coverage/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
+# Local hosting state; keep deployment configs/workflows available to Git
+.vercel/
+.netlify/
+.wrangler/
+
+# Local environment values; safe examples remain shareable
 .env
-.env.production
+.env.*
+!.env.example
+!.env.*.example
 
-# macOS-specific files
-.DS_Store
+# Generated code indexes and local MCP state
+*.scip
+*.scip.gz
+.sdl-mcp/
+/codex-mcp-config.json
+/claude-code-mcp-config.json
+/.mcp.json
+/SDL.md
 
-# jetbrains setting folder
+# Local agent memory/settings (retain these on disk)
+AGENTS.md
+CODEX.md
+HANDOFF.md
+.codex/
+.claude/
+
+# Editor and OS files
 .idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Application source, public assets, docs, package/lockfiles, Astro/TypeScript
+# config, and deployment workflows/configs are intentionally not ignored.

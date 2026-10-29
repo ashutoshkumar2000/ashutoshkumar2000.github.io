@@ -1,0 +1,17 @@
+.employment-role { color: var(--accent); font-size: 12px; margin-top: 6px; }
+.role-history { list-style: none; padding: 0; margin: 10px 0 0; }
+.role-history > li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 18px; font-size: 12px; line-height: 1.7; }
+.role-history > li + li { margin-top: 6px; }
+.role-history-title { color: var(--muted); }
+.role-history > li:first-child .role-history-title { color: var(--accent); font-weight: 600; }
+.role-history-date { color: var(--muted); font: 9px/1.7 var(--font-mono); }
+.resume-document .role-history { padding: 0; margin: 10px 0 0; }
+.resume-document .role-history > li { margin: 0 0 4px; }
+.resume-document .employment-role { margin-top: 7px; font-weight: 650; }
+.resume-job-location { color: var(--muted); font-size: 11px; margin-top: 4px; }
+@media print {
+  .resume-document .role-history { margin-top: 5px; }
+  .resume-document .role-history > li { margin-bottom: 3px; font-size: 8.5pt; break-inside: avoid; }
+  .resume-document .role-history-date { font-size: 8pt; }
+  .resume-document .role-history-title, .resume-document .role-history > li:first-child .role-history-title { color: #171717; }
+}

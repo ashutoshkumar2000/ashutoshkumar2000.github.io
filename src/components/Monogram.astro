@@ -1,0 +1,13 @@
+---
+import { monogramPieces, monogramCenterX } from '../data/monogram';
+const pathFor = (points: [number, number][]) => points.map(([x,y],i) => `${i ? 'L' : 'M'}${(x-monogramCenterX)*80+300} ${220-y*80}`).join(' ')+'Z';
+---
+<div class="monogram-scene" data-monogram aria-hidden="true">
+  <svg class="monogram-fallback" viewBox="0 0 600 440" fill="none" focusable="false">
+    <g transform="translate(0 10)" fill="#D7C8B3">{monogramPieces.map(piece => <path d={pathFor(piece.points)} />)}</g>
+    <g fill="#C7351D" stroke="#AC2B18" stroke-width=".6" stroke-linejoin="round">{monogramPieces.map(piece => <path d={pathFor(piece.points)} />)}</g>
+  </svg>
+  <span class="monogram-coordinate coordinate-top">FIG. 01 — A / K</span>
+  <span class="monogram-coordinate coordinate-bottom">A PERSONAL MARK</span>
+  <span class="monogram-tick tick-top"></span><span class="monogram-tick tick-bottom"></span>
+</div>

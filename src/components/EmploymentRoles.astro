@@ -1,0 +1,9 @@
+---
+import type { RoleHistoryEntry } from '../data/portfolio';
+import '../styles/employment-roles.css';
+interface Props { role: string; history?: RoleHistoryEntry[] }
+const { role, history } = Astro.props;
+---
+{history?.length ? <ul class="role-history" aria-label="Role history">
+  {history.map(position => <li><span class="role-history-title">{position.title}</span><span class="role-history-date">{position.period}</span></li>)}
+</ul> : <p class="employment-role">{role}</p>}
