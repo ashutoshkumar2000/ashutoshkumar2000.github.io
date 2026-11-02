@@ -36,4 +36,16 @@ Keep planned work labelled accurately. Kubera is in development; its intended ca
 
 GSAP ScrollTrigger uses native scrolling. Three.js loads separately after the page becomes usable, renders only when visible/changing, and falls back to an SVG derived from the same six shape definitions when WebGL is unavailable. Reduced motion removes scroll animation and entrances. Mobile artwork occupies a separate region from text. Native dialogs support Escape, focus restoration and keyboard navigation.
 
-Before delivery, run the build/type check and inspect desktop/mobile layouts, the navigation, dialogs, contact actions, resume printing, reduced motion, and the static fallback. No deployment is configured by this project.
+Before delivery, run the build/type check and inspect desktop/mobile layouts, the navigation, dialogs, contact actions, resume printing, reduced motion, and the static fallback.
+
+## Deployment
+
+Production URL: https://ashutoshkumar2000.github.io/
+
+The site is statically generated into `dist/`. The repository must be named `ashutoshkumar2000.github.io`; it is a GitHub user site served from `/`, so Astro has no `base` path. Canonical and Open Graph URLs use the `site` setting in `astro.config.mjs`.
+
+On GitHub, rename the existing repository or create the repository above, retaining `master` as the default branch. Update your local `origin` to that repository. In **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source.
+
+`.github/workflows/deploy.yml` builds and deploys pushes to `master`, and supports manual runs from the Actions tab. The official Astro action detects npm from the tracked `package-lock.json`, builds the site, and uploads the Pages artifact; GitHub's deploy-pages action publishes it using the `github-pages` environment. No Cloudflare account, Worker, adapter, or deployment credentials are required. If you change the default branch, update the workflow's push filter too.
+
+There is currently no social preview image. Image metadata remains omitted until a suitable image is provided; do not reference `/og-preview.png` until that file exists in `public/`.
