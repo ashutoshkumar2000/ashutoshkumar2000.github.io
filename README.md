@@ -48,4 +48,4 @@ On GitHub, rename the existing repository or create the repository above, retain
 
 `.github/workflows/deploy.yml` builds and deploys pushes to `master`, and supports manual runs from the Actions tab. The official Astro action detects npm from the tracked `package-lock.json`, builds the site, and uploads the Pages artifact; GitHub's deploy-pages action publishes it using the `github-pages` environment. No Cloudflare account, Worker, adapter, or deployment credentials are required. If you change the default branch, update the workflow's push filter too.
 
-There is currently no social preview image. Image metadata remains omitted until a suitable image is provided; do not reference `/og-preview.png` until that file exists in `public/`.
+The social preview image is `public/og-preview.png` (1733×908 PNG). The shared layout emits absolute Open Graph and Twitter image URLs using `site`, with a `summary_large_image` Twitter card. The image was generated with built-in imagegen; its original prompt is recorded in [docs/og-preview-prompt.md](docs/og-preview-prompt.md).
