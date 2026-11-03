@@ -1,0 +1,80 @@
+---
+interface Props { kind: 'sync' | 'email' | 'hierarchy' }
+const { kind } = Astro.props;
+// Sources: workStories and the corresponding facts in docs/portfolio-content.md.
+const stories = {
+  sync: {
+    title: 'FOLDER SYNC', impact: '~30s → ~3s', number: '01', question: 'WHY ASYNC?',
+    decision: 'The API need not wait for the whole sync. Database-backed work lets parallel workers create folders in batches.',
+    stages: ['REQUEST', 'DB-BACKED WORK', 'PARALLEL WORKERS', 'BATCHES'],
+    note: 'The API can return before the whole job finishes.',
+  },
+  email: {
+    title: 'INBOUND REPLIES', impact: '$0 EXTRA INFRASTRUCTURE', number: '02', question: 'WHY VERIFY AT THE EDGE?',
+    decision: 'HMAC checks reject invalid tokens at the edge. Verified replies enter durable MongoDB processing before parsing.',
+    stages: ['EMAIL REPLY', 'EDGE', 'HMAC VERIFY', 'DURABLE QUEUE', 'PARSER', 'DISCUSSION'],
+    note: 'Cloudflare Email Routing / Workers · MongoDB atomic claims · four-layer parsing.',
+  },
+  hierarchy: {
+    title: 'CONFIGURABLE HIERARCHY', impact: 'FIXED → FLEXIBLE', number: '03', question: 'WHY KEEP ANCESTOR PATHS?',
+    decision: 'Flexible structure adds upkeep: node moves must update paths, depth and descendants while accounting for historical alerts.',
+    stages: ['HIERARCHY DEFINITION', 'LEVELS', 'NODES', 'ANCESTOR PATHS'],
+    note: 'Moves update paths, depth and descendants; historical alerts stay in scope.',
+  },
+};
+const story = stories[kind];
+---
+<figure class="system-xray-technical-panel system-xray-flow-panel" data-xray-panel="flows" aria-label={`${story.title.toLowerCase()} architecture`} hidden>
+  <figcaption class="system-xray-panel-heading"><span>FLOW / {story.title}</span><span aria-hidden="true">{story.impact}</span></figcaption>
+  <svg class="system-xray-deep-svg" viewBox="0 0 560 156" fill="none" aria-hidden="true" focusable="false">
+    {kind === 'sync' ? <>
+      <text x="0" y="14">BEFORE / BLOCKING REQUEST</text><text x="550" y="14" text-anchor="end">~30s</text>
+      <rect x="1" y="25" width="87" height="24"/><text x="44" y="41" text-anchor="middle">REQUEST</text>
+      <rect x="150" y="25" width="200" height="24"/><text x="250" y="41" text-anchor="middle">SYNC / FOLDER OPERATIONS</text>
+      <rect x="450" y="25" width="100" height="24"/><text x="500" y="41" text-anchor="middle">RESPONSE</text>
+      <path d="M88 37h62m-5-3 5 3-5 3M350 37h100m-5-3 5 3-5 3"/>
+      <text x="0" y="77">AFTER / DATABASE-BACKED WORK</text><text x="550" y="77" text-anchor="end">~3s</text>
+      <rect x="1" y="89" width="87" height="24"/><text x="44" y="105" text-anchor="middle">REQUEST</text>
+      <rect x="450" y="89" width="100" height="24"/><text x="500" y="105" text-anchor="middle">RESPONSE</text>
+      <path d="M88 101h362m-5-3 5 3-5 3M112 101v36h38m-5-3 5 3-5 3"/>
+      <rect x="150" y="125" width="100" height="24"/><text x="200" y="141" text-anchor="middle">DB WORK</text>
+      <rect x="300" y="121" width="106" height="32"/><text x="353" y="134" text-anchor="middle">PARALLEL</text><text x="353" y="145" text-anchor="middle">WORKERS</text>
+      <rect x="450" y="125" width="100" height="24"/><text x="500" y="141" text-anchor="middle">BATCHES</text>
+      <path d="M250 137h18v-8h32M268 137h32M268 137v8h32M406 129h18v8h26M406 137h44M406 145h18v-8"/>
+    </> : <>
+      {story.stages.map((stage, index) => {
+        const step = 560 / story.stages.length;
+        const x = index * step;
+        return <>
+          <rect x={x + 1} y="48" width={step - 17} height="30"/>
+          <text x={x + (step - 16) / 2} y="67" text-anchor="middle">{stage === 'HIERARCHY DEFINITION' ? 'HIERARCHY DEF.' : stage}</text>
+          {index < story.stages.length - 1 && <path d={`M${x + step - 16} 63h17m-5-3 5 3-5 3`}/>}
+        </>;
+      })}
+      {kind === 'email' ? <>
+        <text x="90" y="110">CLOUDFLARE EMAIL ROUTING / WORKERS</text>
+        <text x="280" y="133">MONGODB / ATOMIC CLAIMS</text><text x="550" y="151" text-anchor="end">FOUR-LAYER PARSING</text>
+      </> : <>
+        <path d="M340 85v15h150v-15"/>
+        <text x="415" y="119" text-anchor="middle">MOVE / UPDATE STRUCTURAL CONTEXT</text>
+        <text x="415" y="141" text-anchor="middle">PATHS · DEPTH · DESCENDANTS</text>
+      </>}
+    </>}
+  </svg>
+  <div class:list={['system-xray-mobile-flow', { 'system-xray-sync-lanes': kind === 'sync' }]}>
+    {kind === 'sync' && <>
+      <p class="system-xray-lane-label">BEFORE / ~30s</p>
+      <ol class="system-xray-stage-list system-xray-before-stages">{['REQUEST', 'SYNC / FOLDERS', 'RESPONSE'].map(stage => <li>{stage}</li>)}</ol>
+      <p class="system-xray-lane-label">AFTER / ~3s</p>
+    </>}
+    <ol class:list={['system-xray-stage-list', { 'system-xray-after-stages': kind === 'sync', 'system-xray-hierarchy-stages': kind === 'hierarchy' }]}>{story.stages.map(stage => <li>{stage}</li>)}</ol>
+  </div>
+  <p class="system-xray-flow-note">{story.note}</p>
+</figure>
+<section class="system-xray-technical-panel system-xray-decision-panel" data-xray-panel="decisions" aria-label={`${story.title.toLowerCase()} decision`} hidden>
+  <div class="system-xray-panel-heading"><span>DECISION / {story.title}</span><span aria-hidden="true">{story.impact}</span></div>
+  <details class="system-xray-decision">
+    <summary>{story.number} / {story.question}<span aria-hidden="true">+</span></summary>
+    <p>{story.decision}</p>
+  </details>
+</section>

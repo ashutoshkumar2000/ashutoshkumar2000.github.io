@@ -36,6 +36,9 @@ h1 { font-size: clamp(6rem, 10.5vw, 10rem); line-height: .86; letter-spacing: -.
 .work-intro h2 { margin-top: 32px; }.work-intro > p:not(.eyebrow) { max-width: 290px; font-size: 14px; margin-top: 30px; color: var(--muted); }
 .work-context { display: flex; gap: 8px; align-items: baseline; font: 10px/1.6 var(--font-mono); margin-top: 48px; }.work-context .live-dot { background: var(--accent-light); }.work-context small { color: var(--muted); font-size: 8px; }
 .work-intro > a { margin-top: 30px; border-bottom: 1px solid var(--line); }
+.work-inspect { margin-top: 24px; max-width: 290px; }
+.work-inspect > p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+.work-inspect > .text-link { min-height: 44px; margin-top: 8px; padding-inline: 0; border: 0; background: none; color: inherit; }
 .work-story { padding-bottom: 80px; margin-bottom: 72px; border-bottom: 1px solid var(--line); scroll-margin-top: 50px; }.work-story:last-child { margin-bottom: 0; border-bottom: 0; }
 .story-top { display: flex; gap: 20px; justify-content: space-between; align-items: center; font: 9px/1.5 var(--font-mono); color: var(--muted); }.story-top > span:first-child { color: var(--accent-light); }.story-top > span:last-child { font: 24px/1 var(--font-body); }
 .work-story h3 { font-size: clamp(2.4rem, 3.9vw, 3.8rem); line-height: 1.06; letter-spacing: -.045em; margin-top: 25px; }

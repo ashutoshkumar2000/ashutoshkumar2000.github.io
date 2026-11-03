@@ -1,0 +1,22 @@
+---
+import '../styles/system-xray.css';
+import XRayStoryDetails from './XRayStoryDetails.astro';
+---
+<div id="system-xray" hidden>
+  <div class="system-xray-grid" aria-hidden="true"></div>
+  <span class="system-xray-notice" aria-hidden="true">SYSTEM X-RAY / ACTIVE</span>
+  <div class="system-xray-toolbar">
+    <div class="system-xray-modes" role="group" aria-label="System X-Ray layer">
+      <button type="button" data-xray-mode="structure" aria-pressed="true">STRUCTURE</button><span aria-hidden="true">/</span>
+      <button type="button" data-xray-mode="flows" aria-pressed="false">FLOWS</button><span aria-hidden="true">/</span>
+      <button type="button" data-xray-mode="decisions" aria-pressed="false">DECISIONS</button>
+    </div>
+    <button class="system-xray-exit" type="button" aria-label="Exit System X-Ray">X-RAY / OFF <span aria-hidden="true">×</span></button>
+  </div>
+</div>
+<template id="system-xray-story-details">
+  {(['sync', 'email', 'hierarchy'] as const).map(kind => <div data-xray-story={kind}><XRayStoryDetails kind={kind} /></div>)}
+</template>
+<span class="sr-only" data-system-xray-status role="status"></span>
+<span id="system-xray-keyboard" hidden>Press the period key three times to inspect the page structure.</span>
+<script>import '../scripts/system-xray';</script>
